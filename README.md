@@ -39,7 +39,8 @@ npm --version    # sollte mitgeliefert werden
 ## Installation
 
 ```bash
-cd tools
+
+cd bibox-to-pdf-md
 npm install
 ```
 
