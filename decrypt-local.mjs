@@ -799,13 +799,12 @@ async function main() {
       let plainText = "";
       let markdown = "";
 
-      for (let i = 0; i < sortedPageIds.length; i++) {
-        const pageId = sortedPageIds[i];
-        const pd = pageDataMap[pageId];
-        const pageNum = i + 1;
+      for (const { page } of pages) {
+        const pageId = (page >= 1 && page <= sortedPageIds.length) ? sortedPageIds[page - 1] : null;
+        const pd = pageId != null ? pageDataMap[pageId] : null;
 
-        plainText += `--- Seite ${pageNum} ---\n\n${pd?.txt || ""}\n\n`;
-        markdown += `# Seite ${pageNum}\n\n${pd?.txt ? formatPageText(pd.txt, pd.cds, { markdown: true }) : ""}\n\n`;
+        plainText += `${pd?.txt || ""}\n\n`;
+        markdown += `${pd?.txt ? formatPageText(pd.txt, pd.cds, { markdown: true }) : ""}\n\n`;
       }
 
       const txtPath = join(bookDir, `${baseName}.txt`);
