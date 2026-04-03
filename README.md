@@ -1,6 +1,8 @@
 # BiBox Offline-Decryptor
 
-Entschlüsselt lokal gespeicherte BiBox 2.0 Bücher und erzeugt durchsuchbare PDFs mit Text-Overlay, Klartext- und Markdown-Dateien. Die Markdown-Ausgabe mit Überschriften, Listen und Absätzen eignet sich besonders gut zur Weiterverarbeitung durch KI-Modelle (z.B. als Kontext für Erklärungen, Zusammenfassungen oder Aufgabenhilfe).
+Entschlüsselt lokal gespeicherte BiBox 2.0 Bücher und erzeugt durchsuchbare PDFs mit Text-Overlay, Klartext- und Markdown-Dateien. 
+Es findet kein OCR statt. Es wird der Text direkt aus BiBox kopiert
+Die Markdown-Ausgabe mit Überschriften, Listen und Absätzen eignet sich besonders gut zur Weiterverarbeitung durch KI-Modelle (z.B. als Kontext für Erklärungen, Zusammenfassungen oder Aufgabenhilfe).
 
 ## Voraussetzungen
 
