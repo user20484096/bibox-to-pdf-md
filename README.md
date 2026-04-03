@@ -47,7 +47,7 @@ npm install
 ## Verwendung
 
 ```bash
-node decrypt-local.mjs [Optionen]
+node bibox.js [Optionen]
 ```
 
 ### Optionen
@@ -90,22 +90,22 @@ books/
 
 ```bash
 # Alle Bücher: PDF + Text + Markdown
-node decrypt-local.mjs
+node bibox.js
 
 # Nur ein Buch
-node decrypt-local.mjs --book 1721
+node bibox.js --book 1721
 
 # Alles inkl. Einzelbilder in eigenes Verzeichnis
-node decrypt-local.mjs --output ~/Desktop/buecher --save-images
+node bibox.js --output ~/Desktop/buecher --save-images
 
 # Nur Bilder-PDF ohne Text (schneller, kleinere Datei)
-node decrypt-local.mjs --no-text
+node bibox.js --no-text
 
 # Zusatzmaterial als Originaldateien herunterladen
-node decrypt-local.mjs --materials
+node bibox.js --materials
 
 # Zusatzmaterial nach Markdown konvertieren
-node decrypt-local.mjs --materials-markdown
+node bibox.js --materials-markdown
 ```
 
 ## Wie funktioniert es?
