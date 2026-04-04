@@ -1,47 +1,16 @@
 # BiBox Offline-Decryptor
 
 Entschlüsselt lokal gespeicherte BiBox 2.0 Bücher und erzeugt durchsuchbare PDFs mit Text-Overlay, Klartext- und Markdown-Dateien.
+Kein OCR — die Buchtexte werden direkt aus den BiBox-Daten übernommen. Keine Zugangsdaten nötig, es werden nur die lokal synchronisierten Dateien gelesen.
 Die Markdown-Ausgabe eignet sich besonders gut zur Weiterverarbeitung durch KI-Modelle.
 
 ## Voraussetzungen
 
 - BiBox 2.0 Desktop-App (`https://bibox2.westermann.de`) mit mindestens einem offline synchronisierten Buch
-- [`uv`](https://docs.astral.sh/uv/) (empfohlen) oder [Node.js](https://nodejs.org) >= 18
 
-## Verwendung
+## Download (empfohlen)
 
-```bash
-# Python (empfohlen)
-uv run bibox.py
-
-# Node.js (Alternative)
-npm install && node bibox.js
-```
-
-### Optionen
-
-| Flag | Beschreibung |
-|------|-------------|
-| `--output <dir>` | Ausgabeverzeichnis (Standard: `./books`) |
-| `--book <id>` | Nur ein bestimmtes Buch (z.B. `--book 1700`) |
-| `--no-text` | Kein Text-Overlay im PDF (nur Bilder) |
-| `--debug-text` | Text-Overlay rot sichtbar (zum Debuggen) |
-| `--save-images` | Einzelne Seitenbilder als JPG/PNG |
-| `--no-materials` | Ohne Zusatzmaterialien |
-| `--markdown` | Volltext als .md statt .txt |
-| `--force` | Vorhandene Bücher überschreiben |
-
-### Beispiele
-
-```bash
-uv run bibox.py --book 1721
-uv run bibox.py --output ~/Desktop/buecher --save-images
-uv run bibox.py --no-text    # schneller, kleinere Datei
-```
-
-## Standalone-Executable (ohne Python/Node.js)
-
-Unter [Releases](../../releases) stehen fertige Executables zum Download:
+Unter [Releases](../../releases) stehen fertige Executables zum Download — keine Installation von Python oder Node.js nötig:
 
 - **macOS**: `bibox-macos.zip` — entpacken, dann im Terminal `./bibox` ausführen
 - **Windows**: `bibox.exe` — direkt ausführen oder ins Terminal ziehen
@@ -62,6 +31,40 @@ Beim ersten Start erscheint "Der Computer wurde durch Windows geschützt":
 
 1. Auf **Weitere Informationen** klicken
 2. **Trotzdem ausführen** klicken
+
+## Alternative: Python oder Node.js
+
+### uv (Python)
+
+```bash
+# uv installieren (macOS / Linux)
+curl -LsSf https://astral.sh/uv/install.sh | sh
+
+# uv installieren (Windows)
+powershell -c "irm https://astral.sh/uv/install.ps1 | iex"
+
+# Ausführen — uv installiert Python und Dependencies automatisch
+uv run bibox.py
+```
+
+### Node.js
+
+```bash
+npm install && node bibox.js
+```
+
+## Optionen
+
+| Flag | Beschreibung |
+|------|-------------|
+| `--output <dir>` | Ausgabeverzeichnis (Standard: `./books`) |
+| `--book <id>` | Nur ein bestimmtes Buch (z.B. `--book 1700`) |
+| `--no-text` | Kein Text-Overlay im PDF (nur Bilder) |
+| `--debug-text` | Text-Overlay rot sichtbar (zum Debuggen) |
+| `--save-images` | Einzelne Seitenbilder als JPG/PNG |
+| `--no-materials` | Ohne Zusatzmaterialien |
+| `--markdown` | Volltext als .md statt .txt |
+| `--force` | Vorhandene Bücher überschreiben |
 
 ## Ausgabe
 
