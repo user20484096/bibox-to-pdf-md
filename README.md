@@ -1,4 +1,4 @@
-# BiBox Offline-Decryptor
+# BiBox — Bücher als PDF und Markdown exportieren
 
 Entschlüsselt lokal gespeicherte BiBox 2.0 Bücher und erzeugt durchsuchbare PDFs mit Text-Overlay, Klartext- und Markdown-Dateien.
 Kein OCR — die Buchtexte werden direkt aus den BiBox-Daten übernommen. Keine Zugangsdaten nötig, es werden nur die lokal synchronisierten Dateien gelesen.
