@@ -1,52 +1,40 @@
 # BiBox Offline-Decryptor
 
-Entschlüsselt lokal gespeicherte BiBox 2.0 Bücher und erzeugt durchsuchbare PDFs mit Text-Overlay, Klartext- und Markdown-Dateien. 
-Es findet kein OCR statt. Es wird der Text direkt aus BiBox kopiert
+Entschlüsselt lokal gespeicherte BiBox 2.0 Bücher und erzeugt durchsuchbare PDFs mit Text-Overlay, Klartext- und Markdown-Dateien.
+Es findet kein OCR statt. Es wird der Text direkt aus BiBox kopiert.
 Die Markdown-Ausgabe mit Überschriften, Listen und Absätzen eignet sich besonders gut zur Weiterverarbeitung durch KI-Modelle (z.B. als Kontext für Erklärungen, Zusammenfassungen oder Aufgabenhilfe).
 
 ## Voraussetzungen
 
-- **Node.js** >= 18
 - **BiBox 2.0 Desktop-App** mit mindestens einem offline synchronisierten Buch
-- npm-Abhängigkeiten installiert (siehe unten)
-
-## Node.js installieren
-
-### macOS
-
-Am einfachsten über [Homebrew](https://brew.sh/):
-
-```bash
-brew install node
-```
-
-Oder über den [offiziellen Installer](https://nodejs.org/en/download).
-
-### Windows
-
-1. Installer herunterladen von [nodejs.org](https://nodejs.org/en/download)
-2. `.msi`-Datei ausführen und den Anweisungen folgen
-3. Terminal (cmd oder PowerShell) neu öffnen
-4. Prüfen: `node --version` sollte `v18.x` oder höher anzeigen
-
-### Prüfen ob Node.js installiert ist
-
-```bash
-node --version   # sollte v18.0.0 oder höher sein
-npm --version    # sollte mitgeliefert werden
-```
+- **[`uv`](https://docs.astral.sh/uv/)** (empfohlen) oder **Node.js** >= 18
 
 ## Installation
 
-```bash
+### uv (empfohlen)
 
-cd bibox-to-pdf-md
-npm install
+```bash
+# macOS / Linux
+curl -LsSf https://astral.sh/uv/install.sh | sh
+
+# Windows
+powershell -c "irm https://astral.sh/uv/install.ps1 | iex"
 ```
+
+Keine weitere Installation nötig — `uv` installiert Python und alle Dependencies automatisch beim ersten Start.
 
 ## Verwendung
 
+### Python (uv)
+
 ```bash
+uv run bibox.py [Optionen]
+```
+
+### Node.js (Alternative)
+
+```bash
+npm install
 node bibox.js [Optionen]
 ```
 
@@ -59,8 +47,10 @@ node bibox.js [Optionen]
 | `--no-text` | Kein Text-Overlay im PDF (nur Bilder) |
 | `--debug-text` | Text-Overlay rot und sichtbar statt unsichtbar (zum Debuggen) |
 | `--save-images` | Einzelne Seitenbilder als JPG/PNG speichern |
+| `--no-materials` | Ohne Zusatzmaterialien |
 | `--materials` | Zusatzmaterial (DOC, PDF etc.) entschlüsseln und speichern |
-| `--materials-markdown` | Zusatzmaterial nach Markdown konvertieren (siehe unten) |
+| `--materials-markdown` | Zusatzmaterial nach Markdown konvertieren |
+| `--markdown` | Volltext als .md statt .txt |
 | `--force` | Bereits vorhandene Bücher überschreiben |
 
 ### Ausgabe
@@ -74,38 +64,33 @@ books/
     Mathematik heute 7.txt    — Klartext aller Seiten
     Mathematik heute 7.md     — Markdown mit Überschriften, Listen und Absätzen
     Zusatzmaterial.md         — Übersicht aller Zusatzmaterialien (Titel + Dateinamen)
-    Zusatzmaterial/           — Nur mit --materials und/oder --materials-markdown
-      3507_81278_021.doc      — Originaldatei (--materials)
-      3507_81278_021.md       — Markdown-Konvertierung (--materials-markdown)
+    Zusatzmaterial/           — Entschlüsselte Materialien + Markdown-Konvertierung
+      3507_81278_021.doc
+      3507_81278_021.md
       ...
     images/                   — Nur mit --save-images
       page-0001.jpg
       page-0002.jpg
       ...
-  Mathematik heute 5 (403)/
-    ...
 ```
 
 ### Beispiele
 
 ```bash
-# Alle Bücher: PDF + Text + Markdown
-node bibox.js
+# Alle Bücher: PDF + Text + Markdown (Python)
+uv run bibox.py
 
 # Nur ein Buch
-node bibox.js --book 1721
+uv run bibox.py --book 1721
 
 # Alles inkl. Einzelbilder in eigenes Verzeichnis
-node bibox.js --output ~/Desktop/buecher --save-images
+uv run bibox.py --output ~/Desktop/buecher --save-images
 
 # Nur Bilder-PDF ohne Text (schneller, kleinere Datei)
-node bibox.js --no-text
+uv run bibox.py --no-text
 
-# Zusatzmaterial als Originaldateien herunterladen
-node bibox.js --materials
-
-# Zusatzmaterial nach Markdown konvertieren
-node bibox.js --materials-markdown
+# Node.js Alternative
+node bibox.js --book 1721
 ```
 
 ## Wie funktioniert es?
@@ -123,36 +108,23 @@ node bibox.js --materials-markdown
 ~/Library/Application Support/BiBox 2.0/
 ```
 
-**Windows** — Unterstützt (nicht getestet). BiBox-Daten liegen in:
+**Windows** — Unterstützt. BiBox-Daten liegen in:
 ```
 %APPDATA%\BiBox 2.0\
 ```
-Die Font-Suche nutzt `C:\Windows\Fonts\` (Arial Unicode, Arial oder Segoe UI). Verschlüsselung und PDF-Erzeugung sind plattformunabhängig (Node.js crypto + pdf-lib).
 
 **Linux** — Nicht unterstützt. BiBox 2.0 gibt es nur für macOS und Windows.
 
-## Zusatzmaterial-Konvertierung
+## Dependencies
 
-`--materials-markdown` konvertiert heruntergeladenes Zusatzmaterial (DOC, PDF etc.) nach Markdown/Text. Dafür werden externe Tools benötigt:
+### Python (bibox.py)
 
-| Dateityp    | macOS                       | Windows     | Linux       |
-|-------------|-----------------------------| ------------|-------------|
-| DOC/DOCX/RTF | `textutil` (vorinstalliert) | LibreOffice | LibreOffice |
-| PDF         | `pdftotext` (Poppler)       | LibreOffice | LibreOffice |
+- [PyMuPDF](https://pymupdf.readthedocs.io/) — PDF-Erzeugung + Text-Overlay
+- [cryptography](https://cryptography.io/) — AES-256-CTR Entschlüsselung
 
-**Reihenfolge:** Auf macOS werden zuerst die nativen Tools versucht (`textutil`, `pdftotext`). Wenn diese nicht verfügbar sind oder fehlschlagen, wird LibreOffice als Fallback genutzt. Auf Windows wird direkt LibreOffice verwendet.
+Werden von `uv` automatisch installiert (PEP 723 inline metadata).
 
-**LibreOffice installieren (optional, nur für `--materials-markdown`):**
-
-- macOS: `brew install --cask libreoffice` oder [libreoffice.org](https://www.libreoffice.org/download/)
-- Windows: [libreoffice.org](https://www.libreoffice.org/download/) — Standardpfad `C:\Program Files\LibreOffice\` wird automatisch erkannt
-- Poppler (macOS, für PDF): `brew install poppler`
-
-Ohne Konvertierungstools werden die betroffenen Dateien still übersprungen. `--materials` (Originaldateien speichern) funktioniert immer ohne zusätzliche Abhängigkeiten.
-
-## Abhängigkeiten
+### Node.js (bibox.js)
 
 - [pdf-lib](https://www.npmjs.com/package/pdf-lib) — PDF-Erzeugung
 - [@pdf-lib/fontkit](https://www.npmjs.com/package/@pdf-lib/fontkit) — Unicode-Font-Embedding
-
-Alle anderen Funktionen nutzen Node.js Built-ins (`crypto`, `fs`, `path`, `os`).
