@@ -894,4 +894,9 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except Exception as e:
+        print(f"\nFehler: {e}", file=sys.stderr, flush=True)
+    if getattr(sys, "frozen", False):
+        input("\nDrücke Enter zum Beenden...")
