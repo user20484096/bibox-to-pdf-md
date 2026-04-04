@@ -24,7 +24,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v4
       - name: Build executable
-        run: uv run --with pyinstaller pyinstaller --onefile --name bibox --collect-all cryptography --collect-all fitz bibox.py
+        run: uv run --with pyinstaller --with cryptography --with pymupdf pyinstaller --onefile --name bibox --collect-all cryptography --collect-all fitz --collect-all pymupdf --hidden-import fitz bibox.py
       - name: Package artifact
         run: |
           cd dist
