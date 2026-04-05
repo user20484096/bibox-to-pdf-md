@@ -617,7 +617,8 @@ def main():
     no_materials = "--no-materials" in args
     save_materials = not no_materials
     book_filter = int(args[args.index("--book") + 1]) if "--book" in args else None
-    output_dir = Path(args[args.index("--output") + 1]).resolve() if "--output" in args else Path.cwd() / "books"
+    default_books = Path(__file__).resolve().parent / "books"
+    output_dir = Path(args[args.index("--output") + 1]).resolve() if "--output" in args else default_books
 
     home = Path.home()
     if sys.platform == "win32":
